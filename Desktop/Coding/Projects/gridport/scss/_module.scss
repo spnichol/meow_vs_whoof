@@ -1,0 +1,153 @@
+/* LOADING PAGE */
+#loading {
+    position: fixed;
+    left: 50%;
+    bottom: 50%;
+    -ms-transform: translateX(-50%) translateY(50%);
+    -moz-transform: translateX(-50%) translateY(50%);
+    -webkit-transform: translateX(-50%) translateY(50%);
+    transform: translateX(-50%) translateY(50%);
+    text-align: center;
+    max-height: 40vh;
+    height: 40vh;
+    max-width: 40vw;
+    width: 40vw;
+      z-index: 1000;
+
+
+}
+
+.headphones {
+  display: inline-block;
+  fill:url(#grad);
+
+
+
+
+
+  
+}
+#loaderPage {
+  z-index: 1000;
+}
+
+
+
+
+.color-transparent {
+    stop-color: transparent;
+    stop-opacity: 1;
+}
+
+.fill-color {
+    stop-color: white;
+    stop-opacity: 1;
+}
+
+
+
+
+
+/* END LOAINDG PAGE */
+
+
+
+
+#loadingPage {
+z-index: 50;
+   
+}
+
+
+/* HOME PAGE */
+#homePage {
+  display: none;
+
+}
+
+
+
+video#bgvid { 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -99;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url('flatbush.png') no-repeat;
+    background-size: cover; 
+
+
+}
+
+
+
+
+
+
+
+.bubble {
+  min-width: 30vw;
+  min-height: 30vh;
+  width: 30vw;
+  height: 30vh;
+  position: absolute;
+  bottom: 0%;
+  left: 35%;
+  z-index: 3000;
+  opacity: 0.3;
+
+
+}
+
+.logo {
+  display: none;
+  fill: white;
+  z-index: 9000;
+  position: absolute;
+  bottom: 27%;
+  left: 35%;
+  width: 30vw;
+  min-width: 30vw;
+  min-height: 30vh;
+  height: 30vh;
+
+
+
+}
+
+path.st1 {
+  fill: white;
+   z-index: 9000;
+
+}
+
+div.logoSubhead {
+  display: none;
+  color: white;
+  position: absolute;
+  bottom: 19%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: auto;
+  z-index: 9000;
+
+  font-family: "Simplifica";
+
+}
+
+h1 {
+  font-size: 55px;
+  background-color: black;
+  padding: 2px;
+}
+
+
+
+

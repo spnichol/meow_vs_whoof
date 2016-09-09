@@ -1,0 +1,56 @@
+
+
+
+/* Color variables */
+$smokeyOverlay: #f5f5f5;
+$blackBackground: rgb(26, 26, 26);
+$whiteForeground: #fff;
+$blackOverlay: rgba(26, 26, 26, .8);
+$lightGrey: #B3B3B3;
+
+
+/* END - Color variables */
+
+
+
+/* Font variables */
+
+@font-face {
+    font-family: SlimJoe;
+    src: url("./fonts/slimjoe.otf");
+}
+
+@font-face {
+    font-family: BigJohn;
+    src: url("./fonts/bigjohn.otf");
+}
+
+@font-face {
+    font-family: Bizon;
+    src: url("./fonts/bizon.otf");
+}
+
+@font-face {
+    font-family: Voga-Medium;
+    src: url("./fonts/voga-medium.otf");
+}
+@font-face {
+    font-family: Pier-Regular;
+    src: url("./fonts/pier-regular.otf");
+}
+
+
+$slimJoe: "SlimJoe";
+$bigJohn: "BigJohn";
+$bizon: "Bizon";
+$voga: "Voga-Medium";
+$pier: "Pier-Regular";
+
+
+/* END - Font variables */
+
+body {
+	background-color: $blackBackground;
+}
+
+

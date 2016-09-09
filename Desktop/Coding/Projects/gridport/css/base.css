@@ -1,0 +1,157 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* Color variables */
+/* END - Color variables */
+/* Font variables */
+@font-face {
+  font-family: SlimJoe;
+  src: url("./fonts/slimjoe.otf"); }
+
+@font-face {
+  font-family: BigJohn;
+  src: url("./fonts/bigjohn.otf"); }
+
+/* END - Font variables */
+body {
+  background-color: #1a1a1a; }
+
+/** GRID WRAPPER **/
+.line {
+  position: absolute;
+  display: block;
+  background-color: #f5f5f5;
+  opacity: 0.07;
+  color: #1a1a1a; }
+
+.top {
+  width: 100%;
+  top: 27%;
+  height: 1px; }
+
+.bottom {
+  width: 100%;
+  bottom: 27%;
+  height: 1px; }
+
+.right {
+  height: 100%;
+  right: 15%;
+  width: 1px; }
+
+.left {
+  height: 100%;
+  left: 15%;
+  width: 1px; }
+
+#grid-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* ALLOWS USER TO CLICK THROUGH GRID CONTENT */
+  z-index: 99;
+  /*ALL ELEMENTS SHOULD BE below 99 */ }
+
+/* LOADING PAGE */
+.loaderGroup {
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  -ms-transform: translateX(-50%) translateY(50%);
+  -moz-transform: translateX(-50%) translateY(50%);
+  -webkit-transform: translateX(-50%) translateY(50%);
+  transform: translateX(-50%) translateY(50%);
+  text-align: center; }
+
+#loading {
+  display: inline-block;
+  fill: url(#grad); }
+
+#text {
+  font-family: "BigJohn";
+  font-size: 4em;
+  text-align: center;
+  color: white;
+  opacity: 1;
+  margin-top: 2em; }
+
+.color-transparent {
+  stop-color: transparent;
+  stop-opacity: 1; }
+
+.fill-color {
+  stop-color: red;
+  stop-opacity: 1; }
+
+/* END LOAINDG PAGE */
+#loadingPage {
+  z-index: 98; }
+
+/* HOME PAGE */
+#homePage {
+  opacity: 0;
+  background-color: #1a1a1a; }
+
+.loadedHome {
+  visibility: visible; }
+
+video#bgvid {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -100;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  background: url("flatbush.png") no-repeat;
+  background-size: cover; }

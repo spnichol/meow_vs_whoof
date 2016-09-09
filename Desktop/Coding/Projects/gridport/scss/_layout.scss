@@ -1,0 +1,52 @@
+
+/** GRID WRAPPER **/
+.line {
+	position: absolute;
+	display: block;
+	color: white;
+	opacity: 0.1;
+	color: $blackBackground;
+	
+}
+
+.top {
+	width: 100%;
+	top: 27%;
+	height: 1px;
+	background-color: white;
+}
+
+.bottom {
+	width: 100%;
+	bottom: 27%;
+	height: 1px;
+	background-color: white;
+  
+	
+}
+
+.right {
+	height: 100%;
+	right: 15%;
+	width: 1px;
+	background-color: white;
+}
+
+.left {
+	height: 100%;
+	left: 15%;
+	width: 1px;
+	background-color: white;
+}
+
+#grid-wrapper {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	pointer-events: none; /* ALLOWS USER TO CLICK THROUGH GRID CONTENT */
+	z-index: 96; /*ALL ELEMENTS SHOULD BE below 99 */
+	background-color: $blackOverlay;
+
+
+}
+
