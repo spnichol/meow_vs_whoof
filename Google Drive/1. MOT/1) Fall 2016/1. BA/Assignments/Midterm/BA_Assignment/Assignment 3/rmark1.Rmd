@@ -1,0 +1,261 @@
+---
+title: "Giving"
+author: "Steven Nichols"
+date: "November 30, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "MyGivingStory_Assignment3"
+author: "Steven Nichols"
+date: "November 29, 2016"
+output: 
+  html_document: 
+    highlight: monochrome
+    keep_md: yes
+  
+---
+
+
+##Premise for project 
+
+```{r}
+
+#From November 2- December 1, 2015, GivingTuesday asked individuals to reflect upon why they give to a certain nonprofit organization and then share these personal stories on social media. The top 15 "Liked" submissions on Facebook and Twitter were shared with a panel of nonprofit experts for final adjudication. Six winners were awarded $100-500 GlobalGiving gift cards and their chosen nonprofit organizations received $1,000-5,000 grants. The results of the contest exceeded expectations: there were 824 entries, 81,717 votes and 178,435 story views during the contest period. 
+
+#Gates is interested in learning about what inspires people to give. This insight will be used by the Fundation to for the #MyGivingStory 2016 campaign
+
+```
+
+## Activate (possible needed) libraries and read in data 
+
+```{r, message=FALSE, warning=FALSE}
+library(quanteda)
+library(stm)
+library(tm)
+library(NLP)
+library(ggplot2)
+library(ggdendro)
+library(cluster)
+library(fpc)  
+library(dplyr)
+require(magrittr)
+library(tm)
+library(stringr)
+library(tidytext)
+library(plyr)
+library(syuzhet)
+
+
+setwd("C:\\Users\\Steven\\Google Drive\\1. MOT\\1) Fall 2016\\1. BA\\Assignments\\Midterm\\BA_Assignment\\Assignment 3")
+
+raw <- read.csv("data\\raw.csv", header=TRUE, stringsAsFactors=FALSE)
+
+
+
+
+
+```
+
+## Create bar graph of codified reasons ("give_reason" vector)
+
+```{r, message=FALSE, warning=FALSE}
+
+reasons <- raw$give_reason
+reasons <- as.factor(reasons)
+reason_num <- c("1", "2", "3")
+reasons <- raw[raw$give_reason %in% reason_num,]
+reasons <- subset(reasons, select=c("give_reason"))
+
+```
+
+##Plot graph 
+
+```{r, echo=FALSE}
+
+reason_count <- qplot(factor(give_reason), data=reasons, geom="bar", xlab="Reason Given", ylab="Number", fill=factor((give_reason)))
+help(qplot)
+reason_count + scale_fill_discrete(name="Reasons for Giving",
+                         breaks=c("1", "2", "3"),
+                         labels=c("Personal", "Invested", "Exposure"))
+
+```
+
+Create corpus for text analysis 
+
+```{r,eval=TRUE}
+
+#create unique ID for rows 
+raw$ID<-seq.int(nrow(raw))
+
+require(quanteda)
+
+
+
+```
+
+#remove weird character for apostrophe 
+
+```{r}
+
+library(stringr)
+raw$Story_Text <- gsub("'", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("\\n", " ", raw$Story_Text, fixed=TRUE)
+ 
+raw$Story_Text <- gsub("??", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("???", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("o", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("'", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("T", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub("`", "", raw$Story_Text, fixed=TRUE) 
+raw$Story_Text <- gsub(",", " ", raw$Story_Text, fixed=TRUE)
+raw$Story_Text <- gsub(".", " ", raw$Story_Text, fixed=TRUE)
+
+
+
+story_corpus<- corpus(raw$Story_Text,docnames=raw$ID, docvars=raw[, c("ipaddress", "give_reason")] )
+
+
+```
+
+##clean data
+
+```{r, message=FALSE, warning=FALSE}
+
+
+corp <- toLower(story_corpus, keepAcronym=FALSE)
+cleancorpus <- tokenize(story_corpus, 
+                        removeNumbers=TRUE,  
+                        removePunct = TRUE,
+                        removeSeparators=TRUE,
+                        removeTwitter=FALSE,
+                        verbose=TRUE)
+
+
+
+stop_words <- stopwords("SMART")
+stop_words2 <- stopwords("english")
+## additional junk words showing up in the data
+stop_words <- c(stop_words, stop_words2, "said", "www", "facebook", "the", "also", "say", "just", "like","for", 
+                "us", "can", "may", "now", "year", "according", "mr")
+stop_words <- tolower(stop_words)
+
+dfm.story <- dfm(cleancorpus, toLower=TRUE, ignoredFeatures = c(stop_words, stopwords("english")), verbose=TRUE, stem=FALSE)
+
+
+
+topfeatures_story <- topfeatures(dfm.story, n=50)
+topfeatures_story
+
+```
+
+```{r, message=FALSE, warning=FALSE}
+
+bigram_story <- tokenize(story_corpus, removeNumbers=TRUE, removePunct=TRUE, removeSeparators=TRUE, removeTwitter=FALSE, ngrams=2, verbose=TRUE) 
+
+stopstop <- c("www", "http")
+
+dfm.bigram_story <- dfm(bigram_story, ignoredFeatures= c(stop_words, stopwords("english")), verbose=TRUE, stem=FALSE)
+
+topfeatures.bigram_story<-topfeatures(dfm.bigram_story, n=50)
+topfeatures.bigram_story
+```
+
+
+
+## Word cloud of top features 
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+library(wordcloud)
+set.seed(1999)
+dark2 <- brewer.pal(8, "Set1")
+freqValues <- topfeatures(dfm.story, n=500)
+
+wordcloud(names(freqValues), freqValues, max.words=200, scale=c(3,.1), dark2)
+
+set.seed(1999)
+dark2 <- brewer.pal(8, "Set1")
+freqValues_bi <- topfeatures(dfm.bigram_story, n=50)
+
+wordcloud(names(freqValues_bi), freqValues_bi, max.words=200, scale=c(3,.1), dark2)
+
+
+
+```
+
+#advanced analysis  -------------------------
+
+```{r, message=FALSE, warning=FALSE}
+require(tm)
+dfmStory<- dfm(cleancorpus,
+          ignoredFeatures = c(stop_words, stopwords("english")), 
+          verbose=TRUE, 
+          stem=FALSE)
+# Reviewing top features
+topfeatures(dfmStory, 50)    # displays 50 features
+
+dfmStory.tm<-convert(dfmStory, to="tm")
+dfmStory.tm
+
+dtmssStory <- removeSparseTerms(dfmStory.tm, 0.65)
+dtmssStory
+
+d.dfmStory <- dist(t(dtmssStory), method="euclidian")
+d.dfmStory
+
+fitStory <- hclust(d=d.dfmStory, method="average")
+hcdStory <- as.dendrogram(fitStory)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(slam)
+dfmDenseStory <- as.matrix(dtmssStory)
+library(reshape2)
+dfmDenseStory <- melt(dfmDenseStory, value.name="count")
+
+library(ggplot2)
+```
+
+```{r, message=FALSE, warning=FALSE}
+require(cluster)
+require(ggdendro)
+
+p <- ggplot(dfmDenseStory, aes(x = Docs, y = Terms, fill = count)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(high="red" , low="grey")+
+  ylab("") +
+  theme(panel.background = element_blank()) +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+p + labs(title="Sparsity for Story Content")
+
+
+k<-5
+plot(hcdStory, ylab = "Distance", horiz = FALSE, 
+     main = "Five Cluster Dendrogram", 
+     edgePar = list(col = 2:3, lwd = 2:2))
+rect.hclust(fitStory, k=k, border=1:5) # draw dendogram with red borders around the 5 clusters
+
+ggdendrogram(fitStory, rotate = TRUE, size = 4, theme_dendro = FALSE,  color = "blue") +
+  xlab("Features") + 
+  ggtitle("Cluster Dendrogram - User Stories")
+
+```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+
+require(fpc)   
+d <- dist(t(dtmssStory), method="euclidian")   
+kfit <- kmeans(d, 5)   
+clusplot(as.matrix(d), kfit$cluster, color=T, shade=T, labels=2, lines=0)
+
+```
+
+
+
+
+
